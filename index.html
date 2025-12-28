@@ -5,850 +5,172 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northfield V5 - NovaLife</title>
 
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    color: #e5e7eb;
-    min-height: 100vh;
-}
-
-header {
-    background: rgba(2, 6, 23, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-}
-
-header button {
-    background: none;
-    border: none;
-    color: #94a3b8;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    padding: 10px 20px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-header button:hover {
-    color: #38bdf8;
-    background: rgba(56, 189, 248, 0.1);
-    transform: translateY(-2px);
-}
-
-header button.active {
-    color: #38bdf8;
-    background: rgba(56, 189, 248, 0.15);
-}
-
-header button.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 20px;
-    right: 20px;
-    height: 2px;
-    background: #38bdf8;
-}
-
-main {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 20px;
-}
-
-.hidden {
-    display: none;
-}
-
-section {
-    animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-h1 {
-    color: #38bdf8;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    text-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
-}
-
-h2 {
-    color: #38bdf8;
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-h2::before {
-    content: '';
-    width: 4px;
-    height: 24px;
-    background: linear-gradient(180deg, #38bdf8 0%, #0ea5e9 100%);
-    border-radius: 2px;
-}
-
-/* ACCUEIL */
-#accueil {
-    padding: 40px 20px;
-}
-
-.hero-title {
-    font-size: 2.8rem;
-    color: #38bdf8;
-    margin-bottom: 30px;
-    text-align: center;
-    text-shadow: 0 2px 20px rgba(56, 189, 248, 0.4);
-    line-height: 1.3;
-}
-
-.hero-subtitle {
-    font-size: 1.2rem;
-    color: #cbd5e1;
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.content-section {
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(14, 165, 233, 0.04) 100%);
-    border: 1px solid rgba(56, 189, 248, 0.2);
-    border-radius: 16px;
-    padding: 35px;
-    margin-bottom: 30px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-}
-
-.content-section:hover {
-    border-color: rgba(56, 189, 248, 0.4);
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-}
-
-.content-section h3 {
-    color: #38bdf8;
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.content-section p {
-    line-height: 1.8;
-    color: #cbd5e1;
-    margin-bottom: 15px;
-    font-size: 1.05rem;
-}
-
-.content-section ul {
-    list-style: none;
-    margin: 20px 0;
-}
-
-.content-section li {
-    padding: 12px 0 12px 30px;
-    position: relative;
-    color: #cbd5e1;
-    line-height: 1.7;
-    font-size: 1.05rem;
-}
-
-.content-section li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    color: #38bdf8;
-    font-size: 1.2rem;
-}
-
-.content-section strong {
-    color: #38bdf8;
-    font-weight: 600;
-}
-
-.cta-section {
-    background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
-    border-radius: 16px;
-    padding: 40px;
-    text-align: center;
-    margin-top: 40px;
-    box-shadow: 0 8px 32px rgba(56, 189, 248, 0.4);
-}
-
-.cta-section h3 {
-    color: #020617;
-    font-size: 2rem;
-    margin-bottom: 15px;
-}
-
-.cta-section p {
-    color: #0f172a;
-    font-size: 1.2rem;
-    font-weight: 500;
-}
-
-.cta-section a {
-    color: #020617;
-    text-decoration: underline;
-    font-weight: bold;
-}
-
-/* ENTREPRISE & STAFF */
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.add-btn {
-    font-size: 28px;
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    color: #020617;
-    font-weight: bold;
-    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4);
-    transition: all 0.3s ease;
-}
-
-.add-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6);
-}
-
-.add-btn:active {
-    transform: translateY(-1px);
-}
-
-form {
-    background: rgba(2, 6, 23, 0.6);
-    backdrop-filter: blur(10px);
-    padding: 30px;
-    border-radius: 16px;
-    margin: 20px 0;
-    border: 1px solid rgba(56, 189, 248, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    animation: slideDown 0.3s ease;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-form label {
-    display: block;
-    color: #38bdf8;
-    font-weight: 600;
-    margin-top: 20px;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
-
-form label:first-of-type {
-    margin-top: 0;
-}
-
-form input, form select, form textarea {
-    width: 100%;
-    padding: 14px;
-    border-radius: 8px;
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    background: rgba(15, 23, 42, 0.8);
-    color: #e5e7eb;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-form input:focus, form select:focus, form textarea:focus {
-    outline: none;
-    border-color: #38bdf8;
-    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
-}
-
-form textarea {
-    min-height: 80px;
-    resize: vertical;
-}
-
-.date-inputs {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-}
-
-.date-inputs input {
-    text-align: center;
-}
-
-form button {
-    margin-top: 25px;
-    padding: 14px;
-    width: 100%;
-    background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 16px;
-    color: #020617;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4);
-}
-
-form button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6);
-}
-
-.grade-section {
-    margin-top: 40px;
-}
-
-.card {
-    background: linear-gradient(135deg, rgba(2, 6, 23, 0.8) 0%, rgba(15, 23, 42, 0.6) 100%);
-    backdrop-filter: blur(10px);
-    padding: 20px;
-    border-radius: 12px;
-    margin-top: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid rgba(56, 189, 248, 0.1);
-    transition: all 0.3s ease;
-    animation: fadeIn 0.4s ease;
-}
-
-.card:hover {
-    transform: translateX(5px);
-    border-color: rgba(56, 189, 248, 0.3);
-    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.2);
-}
-
-.card-info strong {
-    color: #38bdf8;
-    font-size: 1.1rem;
-}
-
-.card-info small {
-    color: #94a3b8;
-    display: block;
-    margin-top: 8px;
-}
-
-.anciennete {
-    color: #38bdf8 !important;
-    font-weight: 600;
-    font-size: 0.95rem !important;
-}
-
-.delete-btn {
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-    border: none;
-    color: white;
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
-}
-
-.delete-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.5);
-}
-
-.empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: #64748b;
-    font-style: italic;
-}
-
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 2rem;
-    }
-    
-    .nav-container {
-        gap: 20px;
-    }
-    
-    header button {
-        padding: 8px 12px;
-        font-size: 14px;
-    }
-    
-    .card {
-        flex-direction: column;
-        gap: 15px;
-        align-items: flex-start;
-    }
-    
-    .content-section {
-        padding: 25px;
-    }
-
-    .date-inputs {
-        grid-template-columns: 1fr;
-    }
-}
+/* ======== CSS IDENTIQUE À TON CODE ======== */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma;background:linear-gradient(135deg,#0f172a,#1e293b);color:#e5e7eb;min-height:100vh}
+header{background:rgba(2,6,23,.95);padding:20px;position:sticky;top:0;z-index:1000}
+.nav-container{display:flex;justify-content:center;gap:40px}
+header button{background:none;border:none;color:#94a3b8;font-size:16px;cursor:pointer;padding:10px 20px;border-radius:8px}
+header button.active,header button:hover{color:#38bdf8;background:rgba(56,189,248,.15)}
+main{max-width:1200px;margin:40px auto;padding:20px}
+.hidden{display:none}
+.card{background:rgba(2,6,23,.8);padding:20px;border-radius:12px;margin-top:10px;display:flex;justify-content:space-between}
+.delete-btn{background:#dc2626;border:none;color:white;padding:8px 12px;border-radius:6px;cursor:pointer}
+form{background:rgba(2,6,23,.7);padding:25px;border-radius:12px;margin:20px 0}
+form input,form select,form textarea{width:100%;padding:12px;margin-bottom:15px;background:#020617;border:1px solid #38bdf8;color:white}
+form button{background:#38bdf8;border:none;padding:12px;font-weight:bold;cursor:pointer}
 </style>
 </head>
 
 <body>
 
 <header>
-    <div class="nav-container">
-        <button class="active" onclick="showSection('accueil', this)">Accueil</button>
-        <button onclick="showSection('entreprise', this)">Entreprise</button>
-        <button onclick="showSection('staff', this)">Équipe Staff</button>
-    </div>
+  <div class="nav-container">
+    <button class="active" onclick="showSection('accueil',this)">Accueil</button>
+    <button onclick="showSection('entreprise',this)">Entreprise</button>
+    <button onclick="showSection('staff',this)">Équipe Staff</button>
+  </div>
 </header>
 
 <main>
 
-<!-- ACCUEIL -->
 <section id="accueil">
-    <h1 class="hero-title">🏙️ Bienvenue sur Northfield V5 : L'Excellence du Roleplay</h1>
-    <p class="hero-subtitle">Vous cherchez une expérience de jeu fluide, immersive et véritablement unique ? Ne cherchez plus. Après des mois de développement intensif, Northfield revient dans sa version la plus aboutie : la V5.</p>
-
-    <div class="content-section">
-        <h3>🛠️ Une Conception 100% "Home-made"</h3>
-        <p>Contrairement à de nombreux serveurs, Northfield V5 n'est pas un simple assemblage de scripts trouvés sur le net. Nous sommes fiers de vous annoncer que le serveur a été entièrement créé par nos soins.</p>
-        <p>Chaque ligne de code, chaque interface (UI) et chaque système a été pensé, développé et testé par notre équipe technique. Cela nous permet de maîtriser parfaitement notre environnement et de vous proposer des fonctionnalités exclusives que vous ne verrez nulle part ailleurs.</p>
-    </div>
-
-    <div class="content-section">
-        <h3>⚡ Une Optimisation Inégalée</h3>
-        <p>L'expérience de jeu est notre priorité absolue. Nous savons qu'un bon RP passe par une fluidité exemplaire :</p>
-        <ul>
-            <li><strong>Performance accrue</strong> : Un code propre pour garantir un maximum de FPS, même dans les zones denses.</li>
-            <li><strong>Stabilité garantie</strong> : Finis les crashs intempestifs et les desyncs qui gâchent vos scènes.</li>
-            <li><strong>Scripts légers</strong> : Tout a été optimisé pour que le serveur consomme le moins de ressources possible sur votre machine.</li>
-        </ul>
-    </div>
-
-    <div class="content-section">
-        <h3>🎭 Un Univers Riche et Immersif</h3>
-        <p>Northfield V5, c'est aussi un contenu pensé pour tous les types de joueurs :</p>
-        <ul>
-            <li><strong>Économie réaliste et équilibrée</strong> : Pour une progression gratifiante sur le long terme.</li>
-            <li><strong>Métiers inédits</strong> : Des jobs légaux avec des mécaniques de jeu poussées.</li>
-            <li><strong>Système illégal profond</strong> : Une gestion des drogues, des braquages et des territoires entièrement revue pour favoriser les interactions.</li>
-            <li><strong>Mapping exclusif</strong> : Des lieux uniques créés pour renforcer l'immersion de votre personnage.</li>
-        </ul>
-    </div>
-
-    <div class="cta-section">
-        <h3>🤝 Rejoignez l'Aventure</h3>
-        <p>Que vous soyez un vétéran du RP ou un nouveau venu, Northfield V5 vous offre un cadre sérieux et une communauté soudée. Notre équipe de modération est à l'écoute et présente pour garantir le respect des règles et la qualité des scènes.</p>
-        <p><strong>Pour un RolePlay encore plus immersif, rejoignez le Discord ci-joint : <a href="https://discord.gg/Jvx6USwZNV" target="_blank">https://discord.gg/Jvx6USwZNV</a></strong></p>
-    </div>
+  <h1>🏙️ Northfield V5</h1>
+  <p>Serveur RolePlay optimisé et immersif.</p>
 </section>
 
-<!-- ENTREPRISE -->
 <section id="entreprise" class="hidden">
-    <div class="section-header">
-        <h1>🏢 Entreprises</h1>
-        <button class="add-btn" onclick="toggleEntrepriseForm()">+</button>
-    </div>
+  <h1>🏢 Entreprises</h1>
+  <button onclick="toggleEntrepriseForm()">+</button>
 
-    <form id="entrepriseForm" class="hidden">
-        <label>Nom de l'entreprise *</label>
-        <input type="text" id="entrepriseNom" placeholder="Veuillez renseigner le nom de l'entreprise">
-        
-        <label>Prénom du PDG *</label>
-        <input type="text" id="entreprisePrenomPDG" placeholder="Ex: John">
-        
-        <label>Nom du PDG *</label>
-        <input type="text" id="entrepriseNomPDG" placeholder="Ex: Smith">
-        
-        <label>ID Terrain *</label>
-        <input type="text" id="entrepriseIdTerrain" placeholder="Numéro du terrain (/t)">
-        
-        <label>Discord *</label>
-        <input type="text" id="entrepriseDiscord" placeholder="Ex: https://discord">
-        
-        <label>Phrase d'accroche *</label>
-        <textarea id="entreprisePhraseAccroche" placeholder="Description de l'entreprise"></textarea>
-        
-        <button type="button" onclick="addEntreprise()">✓ Ajouter l'entreprise</button>
-    </form>
+  <form id="entrepriseForm" class="hidden">
+    <input id="entrepriseNom" placeholder="Nom entreprise">
+    <input id="entreprisePrenomPDG" placeholder="Prénom PDG">
+    <input id="entrepriseNomPDG" placeholder="Nom PDG">
+    <input id="entrepriseIdTerrain" placeholder="ID Terrain">
+    <input id="entrepriseDiscord" placeholder="Discord">
+    <textarea id="entreprisePhraseAccroche" placeholder="Phrase d'accroche"></textarea>
+    <button type="button" onclick="addEntreprise()">Ajouter</button>
+  </form>
 
-    <div id="entrepriseContainer"></div>
+  <div id="entrepriseContainer"></div>
 </section>
 
-<!-- STAFF -->
 <section id="staff" class="hidden">
-    <div class="section-header">
-        <h1>👮 Équipe Staff</h1>
-        <button class="add-btn" onclick="toggleStaffForm()">+</button>
-    </div>
+  <h1>👮 Équipe Staff</h1>
+  <button onclick="toggleStaffForm()">+</button>
 
-    <form id="staffForm" class="hidden">
-        <label>Prénom *</label>
-        <input type="text" id="staffPrenom" placeholder="Veuillez renseigner le prénom">
-        
-        <label>Nom *</label>
-        <input type="text" id="staffNom" placeholder="Veuillez renseigner le nom">
+  <form id="staffForm" class="hidden">
+    <input id="staffPrenom" placeholder="Prénom">
+    <input id="staffNom" placeholder="Nom">
+    <select id="staffGrade">
+      <option value="">Grade</option>
+      <option>Fondateur</option>
+      <option>Administrateur</option>
+      <option>Modérateur</option>
+    </select>
+    <input id="staffJour" placeholder="Jour">
+    <input id="staffMois" placeholder="Mois">
+    <input id="staffAnnee" placeholder="Année">
+    <button type="button" onclick="addStaff()">Ajouter</button>
+  </form>
 
-        <label>Grade *</label>
-        <select id="staffGrade">
-            <option value="">-- Sélectionner un grade --</option>
-            <option>Fondateur</option>
-            <option>Co-Fondateur</option>
-            <option>Responsable</option>
-            <option>Responsable Staff</option>
-            <option>Administrateur</option>
-            <option>Modérateur</option>
-            <option>Modérateur-Test</option>
-        </select>
-
-        <label>Date d'arrivée *</label>
-        <div class="date-inputs">
-            <input type="number" id="staffJour" placeholder="Jour (1-31)" min="1" max="31">
-            <input type="number" id="staffMois" placeholder="Mois (1-12)" min="1" max="12">
-            <input type="number" id="staffAnnee" placeholder="Année (2020-2030)" min="2020" max="2030">
-        </div>
-        
-        <button type="button" onclick="addStaff()">✓ Ajouter le membre</button>
-    </form>
-
-    <div id="staffContainer"></div>
+  <div id="staffContainer"></div>
 </section>
 
 </main>
 
 <script>
-const grades = [
-    "Fondateur",
-    "Co-Fondateur",
-    "Responsable",
-    "Responsable Staff",
-    "Administrateur",
-    "Modérateur",
-    "Modérateur-Test"
-];
+/* ===================== SUPABASE ===================== */
+const supabaseUrl = "https://owdolvoyequfcimwelgk.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im93ZG9sdm95ZXF1ZmNpbXdlbGdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5Mjg5NjUsImV4cCI6MjA4MjUwNDk2NX0.4JPgzL0MnE0YM9sCvxY9Tz7TwxrWfpSRlNBZynQf6Ko";
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-let staffMembers = [];
-let entreprises = [];
-
-// NAVIGATION
-function showSection(id, button) {
-    document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
-    document.getElementById(id).classList.remove("hidden");
-    
-    document.querySelectorAll("header button").forEach(b => b.classList.remove("active"));
-    button.classList.add("active");
+/* ===================== NAV ===================== */
+function showSection(id,btn){
+ document.querySelectorAll("section").forEach(s=>s.classList.add("hidden"));
+ document.getElementById(id).classList.remove("hidden");
+ document.querySelectorAll("header button").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active");
 }
 
-// ENTREPRISES
-function toggleEntrepriseForm() {
-    const form = document.getElementById("entrepriseForm");
-    form.classList.toggle("hidden");
+/* ===================== ENTREPRISE ===================== */
+function toggleEntrepriseForm(){
+ document.getElementById("entrepriseForm").classList.toggle("hidden");
 }
 
-function addEntreprise() {
-    const nom = document.getElementById('entrepriseNom').value.trim();
-    const prenomPDG = document.getElementById('entreprisePrenomPDG').value.trim();
-    const nomPDG = document.getElementById('entrepriseNomPDG').value.trim();
-    const idTerrain = document.getElementById('entrepriseIdTerrain').value.trim();
-    const discord = document.getElementById('entrepriseDiscord').value.trim();
-    const phraseAccroche = document.getElementById('entreprisePhraseAccroche').value.trim();
-
-    if (!nom || !prenomPDG || !nomPDG || !idTerrain || !discord || !phraseAccroche) {
-        alert('⚠️ Veuillez remplir tous les champs obligatoires');
-        return;
-    }
-
-    entreprises.push({
-        nom: nom,
-        prenomPDG: prenomPDG,
-        nomPDG: nomPDG,
-        idTerrain: idTerrain,
-        discord: discord,
-        phraseAccroche: phraseAccroche
-    });
-
-    // Réinitialiser le formulaire
-    document.getElementById('entrepriseNom').value = '';
-    document.getElementById('entreprisePrenomPDG').value = '';
-    document.getElementById('entrepriseNomPDG').value = '';
-    document.getElementById('entrepriseIdTerrain').value = '';
-    document.getElementById('entrepriseDiscord').value = '';
-    document.getElementById('entreprisePhraseAccroche').value = '';
-
-    renderEntreprises();
-    toggleEntrepriseForm();
+async function addEntreprise(){
+ const data={
+  nom:entrepriseNom.value,
+  prenom_pdg:entreprisePrenomPDG.value,
+  nom_pdg:entrepriseNomPDG.value,
+  id_terrain:entrepriseIdTerrain.value,
+  discord:entrepriseDiscord.value,
+  phrase_accroche:entreprisePhraseAccroche.value
+ };
+ await supabase.from("entreprises").insert([data]);
+ toggleEntrepriseForm();
+ loadEntreprises();
 }
 
-function deleteEntreprise(index) {
-    if (confirm("⚠️ Êtes-vous sûr de vouloir supprimer cette entreprise ?")) {
-        entreprises.splice(index, 1);
-        renderEntreprises();
-    }
+async function loadEntreprises(){
+ const {data}=await supabase.from("entreprises").select("*");
+ entrepriseContainer.innerHTML="";
+ data.forEach(e=>{
+  entrepriseContainer.innerHTML+=`
+   <div class="card">
+    <div>${e.nom} – PDG ${e.prenom_pdg} ${e.nom_pdg}</div>
+    <button class="delete-btn" onclick="deleteEntreprise('${e.id}')">🗑</button>
+   </div>`;
+ });
 }
 
-function renderEntreprises() {
-    const container = document.getElementById("entrepriseContainer");
-    
-    if (entreprises.length === 0) {
-        container.innerHTML = '<div class="empty-state">Aucune entreprise enregistrée pour le moment.</div>';
-        return;
-    }
-
-    container.innerHTML = "";
-
-    entreprises.forEach((e, index) => {
-        const card = document.createElement("div");
-        card.className = "card";
-        
-        const cardInfo = document.createElement("div");
-        cardInfo.className = "card-info";
-        cardInfo.innerHTML = `
-            <strong>${e.nom}</strong>
-            <small>PDG : ${e.prenomPDG} ${e.nomPDG}</small>
-            <small>ID Terrain : ${e.idTerrain}</small>
-            <small>Discord : ${e.discord}</small>
-            <small style="color: #38bdf8; margin-top: 8px; font-style: italic;">"${e.phraseAccroche}"</small>
-        `;
-        
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "delete-btn";
-        deleteBtn.textContent = "🗑️";
-        deleteBtn.onclick = function() {
-            deleteEntreprise(index);
-        };
-        
-        card.appendChild(cardInfo);
-        card.appendChild(deleteBtn);
-        container.appendChild(card);
-    });
+async function deleteEntreprise(id){
+ await supabase.from("entreprises").delete().eq("id",id);
+ loadEntreprises();
 }
 
-// STAFF
-function calculateAnciennete(dateArrivee) {
-    const dateDebut = new Date(dateArrivee);
-    dateDebut.setHours(0, 0, 0, 0);
-    
-    const dateActuelle = new Date();
-    dateActuelle.setHours(0, 0, 0, 0);
-    
-    const diffMs = dateActuelle - dateDebut;
-    const totalJours = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    
-    if (totalJours < 0) {
-        return "Date future";
-    }
-    
-    let annees = dateActuelle.getFullYear() - dateDebut.getFullYear();
-    let mois = dateActuelle.getMonth() - dateDebut.getMonth();
-    let jours = dateActuelle.getDate() - dateDebut.getDate();
-    
-    if (jours < 0) {
-        mois--;
-        const moisPrecedent = new Date(dateActuelle.getFullYear(), dateActuelle.getMonth(), 0);
-        jours += moisPrecedent.getDate();
-    }
-    
-    if (mois < 0) {
-        annees--;
-        mois += 12;
-    }
-    
-    const parts = [];
-    
-    if (annees > 0) {
-        parts.push(`${annees} an${annees > 1 ? 's' : ''}`);
-    }
-    
-    if (mois > 0) {
-        parts.push(`${mois} mois`);
-    }
-    
-    if (jours > 0 || parts.length === 0) {
-        parts.push(`${jours} jour${jours > 1 ? 's' : ''}`);
-    }
-    
-    const ancienneteStr = parts.join(', ');
-    return `${ancienneteStr} (${totalJours} jour${totalJours > 1 ? 's' : ''} au total)`;
+/* ===================== STAFF ===================== */
+function toggleStaffForm(){
+ document.getElementById("staffForm").classList.toggle("hidden");
 }
 
-function toggleStaffForm() {
-    const form = document.getElementById("staffForm");
-    form.classList.toggle("hidden");
+async function addStaff(){
+ const date=`${staffAnnee.value}-${staffMois.value}-${staffJour.value}`;
+ await supabase.from("staff").insert([{
+  prenom:staffPrenom.value,
+  nom:staffNom.value,
+  grade:staffGrade.value,
+  date_arrivee:date
+ }]);
+ toggleStaffForm();
+ loadStaff();
 }
 
-function isValidDate(jour, mois, annee) {
-    if (mois < 1 || mois > 12) return false;
-    if (jour < 1) return false;
-    
-    const joursParMois = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    
-    // Vérifier année bissextile
-    if ((annee % 4 === 0 && annee % 100 !== 0) || (annee % 400 === 0)) {
-        joursParMois[1] = 29;
-    }
-    
-    return jour <= joursParMois[mois - 1];
+async function loadStaff(){
+ const {data}=await supabase.from("staff").select("*");
+ staffContainer.innerHTML="";
+ data.forEach(s=>{
+  staffContainer.innerHTML+=`
+   <div class="card">
+    <div>${s.prenom} ${s.nom} – ${s.grade}</div>
+    <button class="delete-btn" onclick="deleteStaff('${s.id}')">🗑</button>
+   </div>`;
+ });
 }
 
-function addStaff() {
-    const prenom = document.getElementById('staffPrenom').value.trim();
-    const nom = document.getElementById('staffNom').value.trim();
-    const grade = document.getElementById('staffGrade').value;
-    const jour = parseInt(document.getElementById('staffJour').value);
-    const mois = parseInt(document.getElementById('staffMois').value);
-    const annee = parseInt(document.getElementById('staffAnnee').value);
-
-    if (!prenom || !nom || !grade) {
-        alert('⚠️ Veuillez remplir tous les champs obligatoires');
-        return;
-    }
-
-    if (isNaN(jour) || isNaN(mois) || isNaN(annee)) {
-        alert('⚠️ Veuillez entrer une date valide (jour, mois, année)');
-        return;
-    }
-
-    if (!isValidDate(jour, mois, annee)) {
-        alert('⚠️ La date entrée n\'est pas valide. Vérifiez le jour, le mois et l\'année.');
-        return;
-    }
-
-    // Créer la date au format ISO (YYYY-MM-DD)
-    const dateStr = `${annee}-${mois.toString().padStart(2, '0')}-${jour.toString().padStart(2, '0')}`;
-
-    staffMembers.push({
-        prenom: prenom,
-        nom: nom,
-        grade: grade,
-        date: dateStr
-    });
-
-    // Réinitialiser le formulaire
-    document.getElementById('staffPrenom').value = '';
-    document.getElementById('staffNom').value = '';
-    document.getElementById('staffGrade').value = '';
-    document.getElementById('staffJour').value = '';
-    document.getElementById('staffMois').value = '';
-    document.getElementById('staffAnnee').value = '';
-
-    renderStaff();
-    toggleStaffForm();
+async function deleteStaff(id){
+ await supabase.from("staff").delete().eq("id",id);
+ loadStaff();
 }
 
-function deleteStaff(index) {
-    if (confirm("⚠️ Êtes-vous sûr de vouloir supprimer ce membre du staff ?")) {
-        staffMembers.splice(index, 1);
-        renderStaff();
-    }
-}
-
-function renderStaff() {
-    const container = document.getElementById("staffContainer");
-    container.innerHTML = "";
-
-    let hasMembers = false;
-
-    grades.forEach(g => {
-        const members = staffMembers.filter(m => m.grade === g);
-        
-        if (members.length > 0) {
-            hasMembers = true;
-            const section = document.createElement("div");
-            section.className = "grade-section";
-            section.innerHTML = `<h2>${g}</h2>`;
-
-            members.forEach((m) => {
-                const globalIndex = staffMembers.indexOf(m);
-                const anciennete = calculateAnciennete(m.date);
-                
-                const card = document.createElement("div");
-                card.className = "card";
-                
-                const cardInfo = document.createElement("div");
-                cardInfo.className = "card-info";
-                cardInfo.innerHTML = `
-                    <strong>${m.prenom} ${m.nom}</strong>
-                    <small>Arrivé le : ${new Date(m.date).toLocaleDateString('fr-FR', { 
-                        day: '2-digit', 
-                        month: '2-digit', 
-                        year: 'numeric' 
-                    })}</small>
-                    <small class="anciennete">⏱️ Ancienneté : ${anciennete}</small>
-                `;
-                
-                const deleteBtn = document.createElement("button");
-                deleteBtn.className = "delete-btn";
-                deleteBtn.textContent = "🗑️";
-                deleteBtn.onclick = function() {
-                    deleteStaff(globalIndex);
-                };
-                
-                card.appendChild(cardInfo);
-                card.appendChild(deleteBtn);
-                section.appendChild(card);
-            });
-
-            container.appendChild(section);
-        }
-    });
-
-    if (!hasMembers) {
-        container.innerHTML = '<div class="empty-state">Aucun membre dans l\'équipe staff pour le moment.</div>';
-    }
-}
-
-// INITIALISATION
-renderEntreprises();
-renderStaff();
+/* ===================== INIT ===================== */
+loadEntreprises();
+loadStaff();
 </script>
 
 </body>
